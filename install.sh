@@ -3,6 +3,17 @@
 # (c) Sangelo, 2023
 # Read LICENSE for more info
 
+# Check for macOS
+if [[ $OSTYPE == 'darwin'* ]]; then
+    read -p "Warning: MacOS is currently untested. If there's any issues, please report them on GitHub.\n Are you sure you want to continue? [y/N] " macOSChoice
+    case
+        [yY][eE][sS]|[yY]|[zZ]|[jJ])
+            echo "Continuing with experimental support..."
+        *)
+            echo "Exiting..."
+            exit 0
+fi
+
 # Compile program
 nim c -o:bin/niminit niminit
 

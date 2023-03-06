@@ -6,14 +6,17 @@ when defined(windows):
     echo "Warning: Windows is currently unsupported!"
     quit 1
 when defined(macosx):
-    echo "Warning: macOS is currently untested. Would you like to continue? [y/N]"
-    var input = stdin.readLine()
-    case input.toLower
-        of "yes", "y", "z", "j":
-            echo "Initialising non-empty directory..."
-        else:
-            echo "Cancelling..."
-            quit 0
+    if "-s" in (commandLineParams()):
+        echo "Suppressing experimental support warning"
+    else:
+        echo "Warning: macOS is currently untested. Would you like to continue? [y/N]"
+        var input = stdin.readLine()
+        case input.toLower
+            of "yes", "y", "z", "j":
+                echo "Initialising non-empty directory..."
+            else:
+                echo "Cancelling..."
+                quit 0
 
 # Check for files in directory
 var count = 0
