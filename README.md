@@ -33,6 +33,8 @@ nim c -o:bin/niminit niminit
 
 This will create a directory called ``bin/`` inside the repo. You can copy the binary into your path from there.
 
+You'll also find two template files that can be used to initialise a nim project for VSCode inside ``config`` in this repo. You can copy these to ``~/.config/niminit`` or create your own.
+
 ## Update
 1. Open your terminal and ``cd`` into the repository.
 2. Run ``git pull`` to update the local repo.

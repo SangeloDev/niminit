@@ -12,6 +12,10 @@ mkdir -p $HOME/.local/bin
 # Copy binary to local bin folder
 cp bin/niminit $HOME/.local/bin/niminit
 
+# Create config directory & copy files
+mkdir -p $HOME/.config/niminit
+cp config/* $HOME/.config/niminit
+
 # Print info message to export local bin if not already
 echo -e "\n"
 echo -e "\e[92m>>> \e[0mDone! If you haven't already added your local bin folder to your PATH, you can do so by adding the following line to your .profile, .bashrc or .zshrc"
