@@ -12,6 +12,7 @@ if [[ $OSTYPE == 'darwin'* ]]; then
         *)
             echo "Exiting..."
             exit 0
+    esac
 fi
 
 # Compile program
