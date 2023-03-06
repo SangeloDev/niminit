@@ -5,7 +5,7 @@ import strformat
 when defined(windows):
     echo "Warning: Windows is currently unsupported!"
     quit 1
-when defined(macOS):
+when defined(darwin):
     echo "Warning: macOS is currently untested. Would you like to continue? [y/N]"
     var input = stdin.readLine()
     case input.toLower
