@@ -9,9 +9,11 @@ if [[ $OSTYPE == 'darwin'* ]]; then
     case
         [yY][eE][sS]|[yY]|[zZ]|[jJ])
             echo "Continuing with experimental support..."
+            ;;
         *)
             echo "Exiting..."
             exit 0
+            ;;
     esac
 fi
 
