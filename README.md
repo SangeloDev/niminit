@@ -1,9 +1,30 @@
 # niminit
-Copies files from ``~/.config/niminit`` to ``.vscode`` in your current working directory.
+Simple program that copies files from ``~/.config/niminit`` to ``.vscode`` in your current working directory and optionally initialises a Git repo.
 
 Written in nim!
 
-## Compile & Use
+Currently written to work for Linux, not tested on MacOS, Windows is unsupported for now (feel free to make a pull-request :D).
+
+## Table of contents
+- [Install using script](#install-using-script)
+- [Compile & install manually](#compile--install-manually)
+- [Update](#update)
+- [Usage](#usage)
+- [Uninstall](#uninstall)
+
+## Install using script
+Install using one-liner:
+```bash
+# Clone GitHub repo, compile and install niminit
+git clone https://github.com/SangeloDev/niminit && cd niminit && chmod +x install.sh && ./install.sh
+```
+
+If you've cloned the repo already, you can also directly run install.sh:
+```bash
+$ ./install.sh
+```
+
+## Compile & install manually
 To compile ``niminit``, run the following command after cloning:
 
 ```bash
@@ -12,8 +33,19 @@ nim c -o:bin/niminit niminit
 
 This will create a directory called ``bin/`` inside the repo. You can copy the binary into your path from there.
 
-Currently written to work for Linux, not tested for MacOS, Windows is unsupported for now.
+## Update
+1. Open your terminal and ``cd`` into the repository.
+2. Run ``git pull`` to update the local repo.
+3. Run ``./install.sh`` again and enjoy!
 
+## Usage
 To use niminit, run it inside the folder you'd like to initialise, after creating ``~/.config/niminit/`` and adding the files you'd like to copy there.
 
 Optionally, you can pass the ``-g`` flag to also create a git repository.
+
+## Uninstall
+``niminit`` is self-contained, you can just remove the binary from ``~/.local/bin``.
+``niminit`` also uses ``~/.config/niminit``, so remove that directory and you're done!
+
+---
+[Back to the top](#niminit)
