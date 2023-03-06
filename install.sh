@@ -34,4 +34,4 @@ cp config/* $HOME/.config/niminit
 # Print info message to export local bin if not already
 printf "\n"
 printf "\e[92m>>> \e[0mDone! If you haven't already added your local bin folder to your PATH, you can do so by adding the following line to your .profile, .bashrc or .zshrc"
-printf "\e[1m\e[91mexport \e[0m\e[33m\$HOME./local/bin:\$PATH"
+printf "\n\e[1m\e[91mexport \e[0m\e[33m\$HOME./local/bin:\$PATH"
