@@ -6,7 +6,7 @@
 # Check for macOS
 if [[ $OSTYPE == 'darwin'* ]]; then
     read -p "Warning: MacOS is currently untested. If there's any issues, please report them on GitHub.\n Are you sure you want to continue? [y/N] " macOSChoice
-    case
+    case "$macOSChoice" in
         [yY][eE][sS]|[yY]|[zZ]|[jJ])
             echo "Continuing with experimental support..."
             ;;
