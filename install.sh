@@ -18,18 +18,19 @@ if [[ $OSTYPE == 'darwin'* ]]; then
     esac
 fi
 
-# Compile program
-nim c -o:bin/niminit niminit
-
-# Create local bin folder if it doesn't exist
-mkdir -p $HOME/.local/bin
-
-# Copy binary to local bin folder
-cp bin/niminit $HOME/.local/bin/niminit
-
-# Create config directory & copy files
-mkdir -p $HOME/.config/niminit
-cp config/* $HOME/.config/niminit
+{
+    # Compile program
+    nim c -o:bin/niminit niminit &&
+    # Create local bin folder if it doesn't exist
+    mkdir -p $HOME/.local/bin &&
+    # Copy binary to local bin folder
+    cp bin/niminit $HOME/.local/bin/niminit &&
+    # Create config directory & copy files
+    mkdir -p $HOME/.config/niminit &&
+    cp config/* $HOME/.config/niminit &&
+} || {
+    echo "ERROR: The script errored. There might be some clues above this line."
+}
 
 # Print info message to export local bin if not already
 printf "\n"
