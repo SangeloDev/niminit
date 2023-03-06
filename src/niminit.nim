@@ -1,7 +1,11 @@
 import os
 import strutils
 import strformat
+import parsetoml
 
+# TODO: Make .nimble creator
+
+# OS detection
 when defined(windows):
     echo "Warning: Windows is currently unsupported!"
     quit 1

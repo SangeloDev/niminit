@@ -1,0 +1,17 @@
+#######################
+# niminit config file #
+# (c) Sangelo - 2023  #
+#######################
+[general]
+# Should the home directory appended before the config directory?
+appendHome = true
+# The path to the config file (no trailing slashes!)
+configDirectory = "/.config/niminit"
+
+[files]
+# The directory to be created inside the project
+directory = ".vscode"
+files = [
+    "launch.json",
+    "tasks.json"
+]

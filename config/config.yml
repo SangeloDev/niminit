@@ -1,5 +1,0 @@
-config:
-  directory: ".vscode"
-  files:
-    - "tasks.json"
-    - "launch.json"

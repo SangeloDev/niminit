@@ -19,7 +19,7 @@ if [[ $OSTYPE == 'darwin'* ]]; then
 fi
 
 # Compile program
-nim c -o:bin/niminit niminit &&
+nim c -o:bin/niminit src/niminit &&
 # Create local bin folder if it doesn't exist
 mkdir -p $HOME/.local/bin &&
 # Copy binary to local bin folder
