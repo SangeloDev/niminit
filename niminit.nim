@@ -1,5 +1,6 @@
 import os
 import strutils
+import strformat
 
 var count = 0
 for entry in walkDir("."):
@@ -54,7 +55,28 @@ else:
 if "-g" in (commandLineParams()):
     let createdRepo = execShellCmd("git init")
     if createdRepo == 0:
-        echo "Successfully created local git repository!"
+        echo "Successfully initialised local git repository!"
+        echo "Would you like to configure it? [Y/n]"
+        var input = stdin.readLine()
+        case input.toLower
+        of "yes", "y", "z", "j", "":
+            echo "Enter the git remote:"
+            let gitRemote = stdin.readLine()
+            echo "Enter your desired branch name:"
+            let gitBranch = stdin.readLine()
+            echo "Setting values..."
+            let setupGitRepo = execShellCmd(&"git remote add origin {gitRemote}")
+            let setGitBranch = execShellCmd(&"git branch -m {gitBranch}")
+            if setupGitRepo == 0:
+                echo &"Successfully added remote {gitRemote}"
+            else:
+                echo &"Failed to add remote {gitRemote}"
+            if setGitBranch == 0:
+                echo &"Successfully set branch to {gitBranch}"
+            else:
+                echo &"Failed to set branch {gitBranch}"
+        else:
+            echo "Successfully created local git repository!"
     else:
         echo: "Failed creating local git repository."
 
