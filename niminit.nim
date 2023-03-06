@@ -2,10 +2,11 @@ import os
 import strutils
 import strformat
 
+# Check for files in directory
 var count = 0
 for entry in walkDir("."):
     count += 1
-
+# If there are files, ask for confirmation, otherwise continue.
 if count == 0:
     echo "Initialising..."
 else:
@@ -19,6 +20,7 @@ else:
             echo "Cancelling..."
             quit 0
 
+# Define how to handle failed copies
 proc copyFile(src, dest: string): bool =
     try:
         os.copyFile(src, dest)
@@ -28,6 +30,7 @@ proc copyFile(src, dest: string): bool =
         echo "Failed to copy ", src, " to ", dest
         return false
 
+# Define how to handle failed directory creations
 proc createDir(dir: string): bool =
     try:
         os.createDir(dir)
@@ -37,21 +40,40 @@ proc createDir(dir: string): bool =
         echo "Failed to create ", dir
         return false
 
+# Define how to handle configuring a git repo
+proc configureGitRepo(gitRemote, gitBranch: string) =
+    let setupGitRepo = execShellCmd(&"git remote add origin {gitRemote}")
+    let setGitBranch = execShellCmd(&"git branch -m {gitBranch}")
+    if setupGitRepo == 0:
+        echo &"Successfully added remote {gitRemote}"
+    else:
+        echo &"Failed to add remote {gitRemote}"
+    if setGitBranch == 0:
+        echo &"Successfully set branch to {gitBranch}"
+    else:
+        echo &"Failed to set branch {gitBranch}"
+
+#-------------------------------------------------------------------------------#
+
+# Set necessary variables (home directory, config path)
 let homeDir = getEnv("HOME")
 let vscodeDir = ".vscode"
 let tasksPath = joinPath(homeDir, "/.config/niminit/tasks.json")
 let launchPath = joinPath(homeDir, "/.config/niminit/launch.json")
 
+# Create .vscode directory and copy files into it
 let vscDirCreated = createDir(vscodeDir)
 let tasksCopied = copyFile(tasksPath, joinPath(vscodeDir, "tasks.json"))
 let launchCopied = copyFile(launchPath, joinPath(vscodeDir, "launch.json"))
 
+# Check for success and quit if command errored
 if vscDirCreated and tasksCopied and launchCopied:
     echo "All files copied successfully"
 else:
     echo "Failed to copy one or more files"
     quit 1
 
+# Handle -g parameter for git repos.
 if "-g" in (commandLineParams()):
     let createdRepo = execShellCmd("git init")
     if createdRepo == 0:
@@ -64,18 +86,10 @@ if "-g" in (commandLineParams()):
             let gitRemote = stdin.readLine()
             echo "Enter your desired branch name:"
             let gitBranch = stdin.readLine()
-            echo "Setting values..."
-            let setupGitRepo = execShellCmd(&"git remote add origin {gitRemote}")
-            let setGitBranch = execShellCmd(&"git branch -m {gitBranch}")
-            if setupGitRepo == 0:
-                echo &"Successfully added remote {gitRemote}"
-            else:
-                echo &"Failed to add remote {gitRemote}"
-            if setGitBranch == 0:
-                echo &"Successfully set branch to {gitBranch}"
-            else:
-                echo &"Failed to set branch {gitBranch}"
+            echo "Configuring Git repo..."
+            configureGitRepo(gitRemote, gitBranch)
         else:
+            echo "Skipping repository configuration..."
             echo "Successfully created local git repository!"
     else:
         echo: "Failed creating local git repository."
