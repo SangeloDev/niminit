@@ -3,15 +3,13 @@
 # (c) Sangelo - 2023  #
 #######################
 [general]
-# Should the home directory appended before the config directory?
-appendHome = true
-# The path to the config file (no trailing slashes!)
-configDirectory = "/.config/niminit"
+# Should compatibility warnings be suppressed?
+suppressWarnings = false
 
-[files]
-# The directory to be created inside the project
-directory = ".vscode"
-files = [
-    "launch.json",
-    "tasks.json"
-]
+[project]
+# This is the directory inside your home folder containing all of your templates.
+sourceDirectory = "/.config/niminit/templates"
+# The directory to be created inside the project, and to copy the selected project template into. (for example: utils)
+targetDirectory = ".vscode"
+# The default template to use when not explicitly specified. (for example: java)
+defaultTemplate = "nim"

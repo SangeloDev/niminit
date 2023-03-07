@@ -5,13 +5,31 @@ import parsetoml
 
 # TODO: Make .nimble creator
 
-# OS detection
+# Windows detection
 when defined(windows):
     echo "Warning: Windows is currently unsupported!"
     quit 1
+
+# Initialise config
+let homeDir = getEnv("HOME")
+let config = parseToml.parseFile(joinPath(homeDir,
+        "/.config/niminit/config.toml"))
+
+# Set necessary variables (home directory, config path)
+let projectTarget = config["project"]["targetDirectory"].getStr(".vscode")
+# var projectTarget = config["project"].getStr("targetDirectory", ".vscode")
+var projectSource = config["project"]["sourceDirectory"].getStr("/.config")
+var projectTemplate = config["project"]["defaultTemplate"].getStr("nim")
+
+# let tasksPath = joinPath(homeDir, "/.config/niminit/tasks.json")
+# let launchPath = joinPath(homeDir, "/.config/niminit/launch.json")
+
+# Set configuration variables
+let suppressWarnings = config["general"]["suppressWarnings"].getBool(false)
+
 when defined(macosx):
-    if "-s" in (commandLineParams()):
-        echo "Suppressing experimental support warning"
+    if "-s" or suppressWarnings == true in (commandLineParams()):
+        echo "Suppressing experimental support warning."
     else:
         echo "Warning: macOS is currently untested. Would you like to continue? [y/N]"
         var input = stdin.readLine()
@@ -21,24 +39,6 @@ when defined(macosx):
             else:
                 echo "Cancelling..."
                 quit 0
-
-# Check for files in directory
-var count = 0
-for entry in walkDir("."):
-    count += 1
-# If there are files, ask for confirmation, otherwise continue.
-if count == 0:
-    echo "Initialising..."
-else:
-    echo "This directory is not empty."
-    echo "Continue initialising? [y/N]"
-    var input = stdin.readLine()
-    case input.toLower
-        of "yes", "y", "z", "j":
-            echo "Initialising non-empty directory..."
-        else:
-            echo "Cancelling..."
-            quit 0
 
 # Define how to handle failed copies
 proc copyFile(src, dest: string): bool =
@@ -73,24 +73,47 @@ proc configureGitRepo(gitRemote, gitBranch: string) =
     else:
         echo &"Failed to set branch {gitBranch}"
 
-#-------------------------------------------------------------------------------#
+#--#
 
-# Set necessary variables (home directory, config path)
-let homeDir = getEnv("HOME")
-let vscodeDir = ".vscode"
-let tasksPath = joinPath(homeDir, "/.config/niminit/tasks.json")
-let launchPath = joinPath(homeDir, "/.config/niminit/launch.json")
+# Check for files in directory
+var count = 0
+for entry in walkDir("."):
+    count += 1
+# If there are files, ask for confirmation, otherwise continue.
+if count == 0:
+    echo "Initialising..."
+else:
+    echo "This directory is not empty."
+    echo "Continue initialising? [y/N]"
+    var input = stdin.readLine()
+    case input.toLower
+        of "yes", "y", "z", "j":
+            echo "Initialising non-empty directory..."
+        else:
+            echo "Cancelling..."
+            quit 0
 
-# Create .vscode directory and copy files into it
-let vscDirCreated = createDir(vscodeDir)
-let tasksCopied = copyFile(tasksPath, joinPath(vscodeDir, "tasks.json"))
-let launchCopied = copyFile(launchPath, joinPath(vscodeDir, "launch.json"))
+# Create project directory and copy files into it
+let projectDirCreated = createDir(projectTarget)
+
+# Get a list of all the files in the source directory
+let srcDir = 
+let files = walkDir(joinPath(projectSource, "/", projectTemplate))
+
+# Loop through each file and copy it to the destination directory
+for file in files:
+    let srcFile = joinPath(srcDir, file)
+    let destFile = joinPath(destDir, file)
+    if not isDir(srcFile):
+        copyFile(srcFile, destFile)
+        let copiedFiles = copyFile(joinPath(projectSource, "/", projectTemplate,
+                "/*"), projectTarget)
 
 # Check for success and quit if command errored
-if vscDirCreated and tasksCopied and launchCopied:
-    echo "All files copied successfully"
+if projectDirCreated and copiedFiles: # and tasksCopied and launchCopied:
+    echo "All files created successfully"
 else:
-    echo "Failed to copy one or more files"
+    echo "Failed to create one or more files"
     quit 1
 
 # Handle -g parameter for git repos.

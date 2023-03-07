@@ -1,0 +1,12 @@
+########################
+# niminit Nim Template #
+# (c) Sangelo - 2023   #
+########################
+
+[general]
+# Should a script be ran after initialising?
+runScript = false
+# What script should be executed?
+scriptPath = ""
+# Should a git repo be initialised?
+initGitRepo = true
