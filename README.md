@@ -5,6 +5,8 @@ Written in nim!
 
 Currently written to work for Linux, not tested on MacOS, Windows is unsupported for now (feel free to make a pull-request :D).
 
+This repository is available on [Gitpot](https://gitpot.dev/sangelo/niminit) as a mirror!
+
 ## Table of contents
 - [Install using script](#install-using-script)
 - [Compile & install manually](#compile--install-manually)
